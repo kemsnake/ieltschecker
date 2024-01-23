@@ -18,11 +18,15 @@
         "composer/installers": "^2.0",
         "drupal/admin_toolbar": "^3.4",
         "drupal/bootstrap": "^3.29",
+        "drupal/ckwordcount": "^2.1",
         "drupal/core-composer-scaffold": "^10.1",
         "drupal/core-project-message": "^10.1",
         "drupal/core-recommended": "^10.1",
         "drupal/openai": "^1.0@alpha",
-        "drupal/openai_chatgpt": "^1.0@alpha"
+        "drupal/openai_chatgpt": "^1.0@alpha",
+        "erusev/parsedown": "^1.7",
+        "w8tcha/ckeditor-wordcount-plugin": "^1.17",
+        "wikimedia/composer-merge-plugin": "^2.1"
     },
     "conflict": {
         "drupal/drupal": "*"
@@ -36,7 +40,8 @@
             "drupal/core-project-message": true,
             "phpstan/extension-installer": true,
             "dealerdirect/phpcodesniffer-composer-installer": true,
-            "php-http/discovery": true
+            "php-http/discovery": true,
+            "wikimedia/composer-merge-plugin": true
         },
         "sort-packages": true
     },
@@ -45,6 +50,11 @@
             "locations": {
                 "web-root": "web/"
             }
+        },
+        "merge-plugin": {
+            "include": [
+                "web/modules/contrib/ckwordcount/composer.libraries.json"
+            ]
         },
         "installer-paths": {
             "web/core": [

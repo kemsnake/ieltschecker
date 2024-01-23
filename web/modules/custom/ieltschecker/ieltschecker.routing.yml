@@ -1,0 +1,18 @@
+ieltschecker.check_writing_form:
+  path: '/check-writing/{node}'
+  defaults:
+    _form: '\Drupal\ieltschecker\Form\IeltsCheckerForm'
+    _title: 'Check IELTS writing'
+  requirements:
+    _permission: 'access content'
+  options:
+    parameters:
+      node:
+        type: entity:node
+ieltschecker.settings:
+  path: '/admin/config/openai/ieltschecker'
+  defaults:
+    _form: '\Drupal\ieltschecker\Form\GeneralSettingsForm'
+    _title: 'Ieltschecker general settings settings'
+  requirements:
+    _permission: 'administer site configuration'

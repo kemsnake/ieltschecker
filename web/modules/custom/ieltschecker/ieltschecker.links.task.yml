@@ -1,0 +1,3 @@
+ieltschecker.check_writing:
+  title: Check writing
+  route_name: ieltschecker.check_writing_form

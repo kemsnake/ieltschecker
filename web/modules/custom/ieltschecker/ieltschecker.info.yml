@@ -1,0 +1,6 @@
+name: Ieltschecker
+type: module
+description: CHeck IELTS tasks by AI.
+core_version_requirement: ^10
+dependencies:
+  - openai:openai_chatgpt

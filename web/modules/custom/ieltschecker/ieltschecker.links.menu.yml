@@ -1,0 +1,5 @@
+ieltschecker.settings:
+  title: 'IELTS checker'
+  description: 'Configure Ieltschecker.'
+  route_name: ieltschecker.settings
+  parent: openai.admin_config_openai

@@ -47,8 +47,8 @@ services:
 #      PHP_FPM_GROUP: wodby
 #      COLUMNS: 80 # Set 80 columns for docker exec -it.
 #      # Read instructions at https://wodby.com/docs/stacks/php/local/#xdebug
-      #PHP_XDEBUG: 1
-      #PHP_XDEBUG_MODE: debug
+      PHP_XDEBUG: 1
+      PHP_XDEBUG_MODE: debug
       #PHP_IDE_CONFIG: serverName=my-ide
       #PHP_XDEBUG_IDEKEY: "my-ide"
       #PHP_XDEBUG_CLIENT_HOST: 172.17.0.1 # Linux
@@ -67,7 +67,7 @@ services:
 #    - files:/mnt/files
     networks:
       - default
-      - drupalchameleoncv
+      - ieltschecker
 
   nginx:
     image: wodby/nginx:$NGINX_TAG
@@ -83,7 +83,7 @@ services:
     #      NGINX_DRUPAL_FILE_PROXY_URL: http://example.com
     networks:
       - default
-      - drupalchameleoncv
+      - ieltschecker
     volumes:
       - ./:/var/www/html:${VOLUME_FLAGS-cached}
 ## Alternative for macOS users: Mutagen https://wodby.com/docs/stacks/drupal/local#docker-for-mac
@@ -120,15 +120,16 @@ services:
     command: --api.insecure=true --providers.docker
     ports:
     - '80:80'
+#    - '8000:80'
 #    - '8080:8080' # Dashboard
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     networks:
       - default
-      - drupalchameleoncv
+      - ieltschecker
 
 networks:
   # If not declared yet:
-  # docker network create drupalchameleoncv
-  drupalchameleoncv:
+  # docker network create ieltschecker
+  ieltschecker:
     external: true
