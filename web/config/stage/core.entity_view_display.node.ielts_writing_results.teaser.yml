@@ -1,0 +1,36 @@
+uuid: 2d9aed0d-186d-4fbb-bdcc-26a44296b2af
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.ielts_writing_results.field_evaluation
+    - field.field.node.ielts_writing_results.field_task1_description
+    - field.field.node.ielts_writing_results.field_task1_evaluation
+    - field.field.node.ielts_writing_results.field_task1_file
+    - field.field.node.ielts_writing_results.field_task1_result
+    - field.field.node.ielts_writing_results.field_task2_description
+    - field.field.node.ielts_writing_results.field_task2_evaluation
+    - field.field.node.ielts_writing_results.field_task2_result
+    - node.type.ielts_writing_results
+  module:
+    - user
+id: node.ielts_writing_results.teaser
+targetEntityType: node
+bundle: ielts_writing_results
+mode: teaser
+content:
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  field_evaluation: true
+  field_task1_description: true
+  field_task1_evaluation: true
+  field_task1_file: true
+  field_task1_result: true
+  field_task2_description: true
+  field_task2_evaluation: true
+  field_task2_result: true

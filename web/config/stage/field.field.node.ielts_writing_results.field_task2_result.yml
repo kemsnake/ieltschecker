@@ -1,0 +1,24 @@
+uuid: 3704b562-4b37-4629-b01c-45563dc61946
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_task2_result
+    - filter.format.basic_html
+    - node.type.ielts_writing_results
+  module:
+    - text
+id: node.ielts_writing_results.field_task2_result
+field_name: field_task2_result
+entity_type: node
+bundle: ielts_writing_results
+label: 'Task2 result'
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  allowed_formats:
+    - basic_html
+field_type: text_long

@@ -1,0 +1,5 @@
+_core:
+  default_config_hash: jvTSppzcgH5wnzBhX5xnAExcp2I1CzkQ_aky65XNfYI
+prompt_text_task1: "Please evaluate my writing task for the IELTS exam and add your comments about improvements.\r\nAlso, render the average result in the format \"Your IELTS exam value is X\" and render it in bold font.\r\nReturn the answer in markdown format and mark important moments and headings in bold format.\r\n\r\nHere is the task one description:\r\n{task_description}\r\nHere is the task one result:\r\n{task_result}\r\n"
+prompt_text_task2: "Please evaluate my writing task for the IELTS exam and add your comments about improvements.\r\nAlso, render the average result in the format \"Your IELTS exam value is X\" and render it in bold font.\r\nReturn the answer in markdown format and mark important moments and headings in bold format.\r\n\r\nHere is the task two description:\r\n{task_description}\r\nHere is the task two result:\r\n{task_result}"
+menu_depth: 4

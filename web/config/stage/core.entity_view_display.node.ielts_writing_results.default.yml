@@ -1,0 +1,89 @@
+uuid: 5107f75b-0adf-4743-b42a-bb147abcb55f
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.ielts_writing_results.field_evaluation
+    - field.field.node.ielts_writing_results.field_task1_description
+    - field.field.node.ielts_writing_results.field_task1_evaluation
+    - field.field.node.ielts_writing_results.field_task1_file
+    - field.field.node.ielts_writing_results.field_task1_result
+    - field.field.node.ielts_writing_results.field_task2_description
+    - field.field.node.ielts_writing_results.field_task2_evaluation
+    - field.field.node.ielts_writing_results.field_task2_result
+    - node.type.ielts_writing_results
+  module:
+    - image
+    - text
+    - user
+id: node.ielts_writing_results.default
+targetEntityType: node
+bundle: ielts_writing_results
+mode: default
+content:
+  field_evaluation:
+    type: text_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 8
+    region: content
+  field_task1_description:
+    type: text_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_task1_evaluation:
+    type: text_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 4
+    region: content
+  field_task1_file:
+    type: image
+    label: above
+    settings:
+      image_link: ''
+      image_style: ''
+      image_loading:
+        attribute: lazy
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  field_task1_result:
+    type: text_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 3
+    region: content
+  field_task2_description:
+    type: text_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 5
+    region: content
+  field_task2_evaluation:
+    type: text_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 7
+    region: content
+  field_task2_result:
+    type: text_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 6
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden: {  }

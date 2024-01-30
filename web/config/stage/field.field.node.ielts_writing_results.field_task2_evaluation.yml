@@ -1,0 +1,24 @@
+uuid: a9d5bb8d-4f6a-4c97-95a0-3155743850d6
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_task2_evaluation
+    - filter.format.basic_html
+    - node.type.ielts_writing_results
+  module:
+    - text
+id: node.ielts_writing_results.field_task2_evaluation
+field_name: field_task2_evaluation
+entity_type: node
+bundle: ielts_writing_results
+label: 'Task2 evaluation'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  allowed_formats:
+    - basic_html
+field_type: text_long

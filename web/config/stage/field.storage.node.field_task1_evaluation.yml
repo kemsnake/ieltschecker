@@ -1,0 +1,19 @@
+uuid: a97d203b-d540-4f6b-91a4-7111f4088666
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+    - text
+id: node.field_task1_evaluation
+field_name: field_task1_evaluation
+entity_type: node
+type: text_long
+settings: {  }
+module: text
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

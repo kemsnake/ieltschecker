@@ -1,0 +1,24 @@
+uuid: 406a3951-6330-4d83-b83c-799fbabb050c
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_task2_description
+    - filter.format.basic_html
+    - node.type.ielts_writing_results
+  module:
+    - text
+id: node.ielts_writing_results.field_task2_description
+field_name: field_task2_description
+entity_type: node
+bundle: ielts_writing_results
+label: 'Task2 description'
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  allowed_formats:
+    - basic_html
+field_type: text_long
