@@ -2,6 +2,9 @@ ieltschecker.settings:
   type: config_object
   label: 'Ieltschecker settings'
   mapping:
-    prompt_text:
+    prompt_text_task1:
       type: text
-      label: 'Prompt text'
+      label: 'Prompt text for task1'
+    prompt_text_task2:
+      type: text
+      label: 'Prompt text for task2'

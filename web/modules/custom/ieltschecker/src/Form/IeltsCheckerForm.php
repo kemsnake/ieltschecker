@@ -7,6 +7,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\node\NodeInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Parsedown;
+use function Psy\info;
 
 /**
  * Form for send request to ChatGPT.
@@ -48,12 +49,12 @@ class IeltsCheckerForm extends FormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state, NodeInterface $node = NULL) {
-
+    $parsedown = new Parsedown();
     if ($node) {
-      $default_task1_description = strip_tags((string) $node->field_task1_description->processed);
-      $default_task1_result = strip_tags((string) $node->field_task1_result->processed);
-      $default_task2_description = strip_tags((string) $node->field_task2_description->processed);
-      $default_task2_result = strip_tags((string) $node->field_task2_result->processed);
+      $default_task1_description = $node->field_task1_description->processed;
+      $default_task1_result = $node->field_task1_result->processed;
+      $default_task2_description = $node->field_task2_description->processed;
+      $default_task2_result = $node->field_task2_result->processed;
     }
     else {
       $default_task1_description = $default_task1_result = $default_task2_description = $default_task2_result = '';
@@ -65,16 +66,23 @@ class IeltsCheckerForm extends FormBase {
       '#collapsed' => TRUE,
     ];
     $form['task1']['description1'] = [
-      '#type' => 'textarea',
+      '#type' => 'text_format',
+      '#format' => 'basic_html',
       '#title' => $this->t('First task description'),
       '#placeholder' => $this->t('Insert task part one'),
       '#default_value' => $default_task1_description,
     ];
     $form['task1']['result1'] = [
-      '#type' => 'textarea',
+      '#type' => 'text_format',
+      '#format' => 'basic_html',
       '#title' => $this->t('Your result'),
       '#default_value' => $default_task1_result,
       '#placeholder' => $this->t('Insert your task one text'),
+    ];
+    $form['task1']['response1'] = [
+      '#type' => 'markup',
+      '#prefix' => '<div id="openai-chatgpt-response1">',
+      '#suffix' => '</div>',
     ];
 
     $form['task2'] = [
@@ -84,16 +92,23 @@ class IeltsCheckerForm extends FormBase {
       '#collapsed' => TRUE,
     ];
     $form['task2']['description2'] = [
-      '#type' => 'textarea',
+      '#type' => 'text_format',
+      '#format' => 'basic_html',
       '#title' => $this->t('Second task description'),
       '#placeholder' => $this->t('Insert task part two'),
       '#default_value' => $default_task2_description,
     ];
     $form['task2']['result2'] = [
-      '#type' => 'textarea',
+      '#type' => 'text_format',
+      '#format' => 'basic_html',
       '#title' => $this->t('Your result'),
       '#placeholder' => $this->t('Insert your task two text'),
       '#default_value' => $default_task2_result,
+    ];
+    $form['task2']['response2'] = [
+      '#type' => 'markup',
+      '#prefix' => '<div id="openai-chatgpt-response2">',
+      '#suffix' => '</div>',
     ];
 
     $form['actions'] = ['#type' => 'actions'];
@@ -111,7 +126,7 @@ class IeltsCheckerForm extends FormBase {
       ],
       '#ajax' => [
         'callback' => '::getResponse',
-        'wrapper' => 'openai-chatgpt-response',
+        'wrapper' => 'openai-chatgpt-response1',
         'progress' => [
           'type' => 'throbber',
           'message' => $this->t('Analyzing data...'),
@@ -135,14 +150,14 @@ class IeltsCheckerForm extends FormBase {
   public function getResponse(array &$form, FormStateInterface $form_state) {
     $errors = $form_state->getErrors();
     $storage = $form_state->getStorage();
-    if (empty($errors) && !empty($storage)) {
-      $last_response = end($storage['messages']);
-      $form['response']['#markup'] = trim($last_response['content']) ?? $this->t('No answer was provided.');
+    if (empty($errors) && !empty($storage['results'])) {
+      $form['task1']['response1']['#markup'] = trim($storage['results']['task1']) ?? $this->t('No answer was provided.');
+      $form['task2']['response2']['#markup'] = trim($storage['results']['task2']) ?? $this->t('No answer was provided.');
     }
     else {
-      $form['response']['#value'] = 'errors';
+      $form['task1']['response1']['#markup'] = $form['task2']['response2']['#markup'] = 'Run-time error';
     }
-    return $form['response'];
+    return $form['task1']['response1'];
   }
 
   /**
@@ -154,49 +169,39 @@ class IeltsCheckerForm extends FormBase {
     $task1_result = $form_state->getValue('result1');
     $task2_result = $form_state->getValue('result2');
 
-    $prompt_text = \Drupal::config('ieltschecker.settings')->get('prompt_text');
-    $prompt_text = str_replace('{task1_description}', $task1_description, $prompt_text);
-    $prompt_text = str_replace('{task2_description}', $task2_description, $prompt_text);
-    $prompt_text = str_replace('{task1_result}', $task1_result, $prompt_text);
-    $prompt_text = str_replace('{task2_result}', $task2_result, $prompt_text);
+    $prompt_text_task1 = \Drupal::config('ieltschecker.settings')->get('prompt_text_task1');
+    $prompt_text_task1 = str_replace('{task_description}', $task1_description['value'], $prompt_text_task1);
+    $prompt_text_task1 = str_replace('{task_result}', $task1_result['value'], $prompt_text_task1);
 
-    \Drupal::logger('te')->notice($prompt_text);
+    $prompt_text_task2 = \Drupal::config('ieltschecker.settings')->get('prompt_text_task1');
+    $prompt_text_task2 = str_replace('{task_description}', $task2_description['value'], $prompt_text_task2);
+    $prompt_text_task2 = str_replace('{task_result}', $task2_result['value'], $prompt_text_task2);
+
+
+    \Drupal::logger('te')->notice($prompt_text_task1);
     $system = 'You are a friendly helpful assistant inside of a Drupal website. Be encouraging and polite and ask follow up questions of the user after giving the answer.';
     $model = 'gpt-3.5-turbo';
     $temperature = '0.4';
-    $max_tokens = '1000';
-
-    $messages = [
-      ['role' => 'system', 'content' => trim($system)],
-      ['role' => 'user', 'content' => trim($prompt_text)]
-    ];
-
-    /*$response = $this->client->chat()->create(
-      [
-        'model' => $model,
-        'messages' => $messages,
-        'temperature' => (int) $temperature,
-        'max_tokens' => (int) $max_tokens,
-      ],
-    );
-    $result = $response->toArray();*/
-
-    $result = $this->api->chat($model, $messages, $temperature, $max_tokens);
+    $max_tokens = '2000';
     $Parsedown = new Parsedown();
 
-    $messages[] = [
-      'role' => 'assistant',
-      //'content' => trim($result["choices"][0]["message"]["content"]),
-      'content' => $Parsedown->text($result),
+    $request1 = [
+      ['role' => 'system', 'content' => trim($system)],
+      ['role' => 'user', 'content' => trim($prompt_text_task1)],
     ];
-    $form_state->setStorage(['messages' => $messages]);
+    $result = $this->api->chat($model, $request1, $temperature, $max_tokens);
+    $results['task1'] = $Parsedown->text($result);
+
+    $request2 = [
+      ['role' => 'system', 'content' => trim($system)],
+      ['role' => 'user', 'content' => trim($prompt_text_task2)],
+    ];
+    $result = $this->api->chat($model, $request2, $temperature, $max_tokens);
+    $results['task2'] = $Parsedown->text($result);
+
+    $form_state->setStorage(['results' => $results]);
     $form_state->setRebuild(TRUE);
 
-    /*
-    $this->messenger()->addStatus(trim($result["choices"][0]["message"]["content"]));
-    $this->logger()->warning(trim($result["choices"][0]["message"]["content"]));*/
-    //$form_state->setRebuild(TRUE);
-//who is a best actor?
   }
 
 }
